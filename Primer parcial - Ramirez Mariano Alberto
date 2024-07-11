@@ -1,0 +1,190 @@
+// C++ code
+//
+
+// Pins para los botones (activación y desactivación)
+#define pinBotonActivacion 2
+#define pinBotonDesactivacion 3
+
+// Pins para los LEDs de la alarma
+#define pinLED1 8
+#define pinLED2 9
+
+// Defines de los pines del "visualizador de 7 segmentos"
+#define a 6
+#define b 7
+#define c 11
+#define d 12
+#define e 13
+#define f 5
+#define g 4
+
+int temperatura;
+int lecturaDelSensor;
+
+int tiempo = 1000;
+
+void setup()
+{
+  pinMode(pinBotonActivacion, INPUT);
+  pinMode(pinBotonDesactivacion, INPUT);
+  pinMode(pinLED1, OUTPUT);
+  pinMode(pinLED2, OUTPUT);
+  pinMode(a,OUTPUT);
+  pinMode(b,OUTPUT);
+  pinMode(c,OUTPUT);
+  pinMode(d,OUTPUT);
+  pinMode(e,OUTPUT);
+  pinMode(f,OUTPUT);
+  pinMode(g,OUTPUT);
+}
+
+void loop()
+{
+  
+  lecturaDelSensor = analogRead(A0);
+  temperatura = map(lecturaDelSensor,20,350,-40,125);
+  
+  // Comprobar activación/desactivación del sistema de incendio
+  if (digitalRead(pinBotonActivacion) == LOW) {
+    // Activar sistema de incendio
+    if (temperatura >= 60.0) {
+      activarAlarma();
+    }
+  } else if (digitalRead(pinBotonDesactivacion) == LOW) {
+    // Desactivar sistema de incendio
+    desactivarAlarma();
+  }
+
+  if (temperatura < 30) {
+    mostrarCero();
+  } else if (temperatura > 30 && temperatura < 34) {
+    mostrarUno();
+  } else if (temperatura > 35 && temperatura < 39) {
+    mostrarDos();
+  } else if (temperatura > 40 && temperatura < 44) {
+    mostrarTres();
+  } else if (temperatura > 45 && temperatura < 49) {
+    mostrarCuatro();
+  } else if (temperatura > 50 && temperatura < 54) {
+    mostrarA();
+  } else if (temperatura > 55 && temperatura < 59) {
+    mostrarB();
+  } else if (temperatura > 60 && temperatura < 64) {
+    mostrarC();
+  } else if (temperatura > 65 && temperatura < 69) {
+    mostrarD();
+  } else if (temperatura > 69) {
+    mostrarE();
+  }
+  delay(tiempo);
+}
+
+void mostrarCero() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, LOW);
+}
+
+void mostrarUno() {
+  digitalWrite(a, LOW);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
+}
+
+void mostrarDos() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, LOW);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, LOW);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarTres() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarCuatro() {
+  digitalWrite(a, LOW);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarA() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, LOW);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarB() {
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarC() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, LOW);
+}
+
+void mostrarD() {
+  digitalWrite(a, LOW);
+  digitalWrite(b, HIGH);
+  digitalWrite(c, HIGH);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, LOW);
+  digitalWrite(g, HIGH);
+}
+
+void mostrarE() {
+  digitalWrite(a, HIGH);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, HIGH);
+  digitalWrite(e, HIGH);
+  digitalWrite(f, HIGH);
+  digitalWrite(g, HIGH);
+}
+
+void activarAlarma() {
+  digitalWrite(pinLED1, HIGH);
+  digitalWrite(pinLED2, HIGH);
+}
+
+void desactivarAlarma() {
+  digitalWrite(pinLED1, LOW);
+  digitalWrite(pinLED2, LOW);
+}
